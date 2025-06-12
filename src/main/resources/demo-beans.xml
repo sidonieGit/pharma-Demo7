@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!-- <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch 
+						http://www.springframework.org/schema/batch/spring-batch.xsd
+						http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+				        http://www.springframework.org/schema/context/spring-context.xsd
+				        http://www.springframework.org/schema/aop
+				        http://www.springframework.org/schema/aop/spring-aop.xsd"> 
+				        
+	<context:property-placeholder location="classpath:datasource.properties" />
+
+	<!-- Définition du bean MedicamentDao -->
+	<bean id="medicamentDao" class="com.sidoCop.sysPharma.dao.MedicamentDao" init-method="initialisation" destroy-method="destruction">
+	<!--permet de relier la datasource au dao et donc de mettre en place l'injection de dependance/L’injection dans medicamentDao via <property name="dataSourceSk" ref="dataSourceSk" /> -->
+	<property name="dataSourceSk" ref="dataSourceSk"></property>
+	</bean>
+
+	<!-- Définition du bean ServiceMedicament -->
+	<bean id="serviceMedicament" class="com.sidoCop.sysPharma.service.ServiceMedicament" init-method="initialisation" destroy-method="destruction">
+		<property name="imedicamentDao" ref="medicamentDao" />
+	</bean>
+
+		<!-- Création du data source à partir des infos contenues dans le fichier conf/datasource.properties -->
+	<bean id="dataSourceSk" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<property name="driverClassName" value="${database.sk.driver}" />
+		<property name="jdbcUrl" value="${database.sk.url}" />
+		<property name="username" value="${database.sk.username}" />
+		<property name="password" value="${database.sk.password}" />
+		<property name="maximumPoolSize" value="10" /> 
+		<property name="minimumIdle" value="2" />		
+	</bean>
+	
+	
+</beans>

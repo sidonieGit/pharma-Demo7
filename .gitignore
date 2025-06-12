@@ -1,0 +1,60 @@
+# Compiled class files
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Log Files
+*.log
+logs/
+target/*.log
+
+# Maven generated directories
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Eclipse Files
+.classpath
+.project
+.settings/
+*.launch
+.metadata
+
+# IntelliJ IDEA Files
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code Files
+.vscode/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Other temporary files
+*~
+*.bak
+*.swp
+
+# --- Specific to Pharma7 ---
+# Exclude sensitive database properties file.
+src/main/resources/datasource.properties
+
+# If you prefer to exclude the actual Spring XML too, even if it's no longer strictly sensitive (good practice for local overrides)
+# src/main/resources/demo-beans.xml
