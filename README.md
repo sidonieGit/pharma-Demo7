@@ -27,7 +27,7 @@ Ce dépôt contient la septième itération du projet "Pharma". Cette version am
 
 - Java (JDK 8 ou supérieur recommandé)
 - **Maven** (pour la gestion des dépendances et du build)
-- **Spring Framework** (`spring-context`, `spring-jdbc`)
+- **Spring Framework** (`spring-context`)
 - **HikariCP** (pool de connexions JDBC)
 - **MySQL Database** (le projet attend une base de données MySQL locale).
 - **MySQL Connector/J** (dépendance Maven pour le driver JDBC)
@@ -55,7 +55,7 @@ Pour tester cette application, suivez ces étapes :
         prix DOUBLE NOT NULL,
         description TEXT,
         image VARCHAR(255),
-        designationCategorie VARCHAR(255)
+        categorie VARCHAR(255)
     );
     ```
 
@@ -77,7 +77,7 @@ Pour tester cette application, suivez ces étapes :
 6.  **Cloner le dépôt :**
 
     ```bash
-    git clone [https://github.com/votre_utilisateur/Pharma7.git](https://github.com/votre_utilisateur/Pharma7.git)
+    git clone https://github.com/sidonieGit/pharma-Demo7.git
     cd Pharma7
     ```
 
@@ -93,44 +93,8 @@ Pour tester cette application, suivez ces étapes :
       hikari.maximumPoolSize=10
       hikari.minimumIdle=2
       ```
-    - **(Optionnel mais recommandé)** : Pour référence, vous pouvez créer un fichier `datasource.properties.example` dans le même dossier `src/main/resources` (qui lui, sera committé sur Git) avec des placeholders pour indiquer la structure attendue.
 
-8.  **Vérifier la configuration XML (`demo-beans.xml`) :**
-
-    - Ouvrez `src/main/resources/demo-beans.xml`. Il devrait contenir la configuration pour charger les propriétés.
-
-      ```xml
-      <?xml version="1.0" encoding="UTF-8"?>
-      <beans xmlns="[http://www.springframework.org/schema/beans](http://www.springframework.org/schema/beans)"
-        xmlns:xsi="[http://www.w3.org/2001/XMLSchema-instance](http://www.w3.org/2001/XMLSchema-instance)"
-        xmlns:context="[http://www.springframework.org/schema/context](http://www.springframework.org/schema/context)"
-        xsi:schemaLocation="[http://www.springframework.org/schema/beans](http://www.springframework.org/schema/beans) [http://www.springframework.org/schema/beans/spring-beans.xsd](http://www.springframework.org/schema/beans/spring-beans.xsd)
-            [http://www.springframework.org/schema/context](http://www.springframework.org/schema/context) [http://www.springframework.org/schema/context/spring-context.xsd](http://www.springframework.org/schema/context/spring-context.xsd)">
-
-        <context:property-placeholder location="classpath:datasource.properties"/>
-
-        <bean id="medicamentDao" class="com.sidoCop.sysPharma.dao.MedicamentDao" init-method="initialisation" destroy-method="destruction">
-          <property name="dataSourceSk" ref="dataSourceSk"></property>
-        </bean>
-
-        <bean id="serviceMedicament" class="com.sidoCop.sysPharma.service.ServiceMedicament" init-method="initialisation" destroy-method="destruction">
-          <property name="imedicamentDao" ref="medicamentDao" />
-        </bean>
-
-        <bean id="dataSourceSk" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-          <property name="driverClassName" value="${jdbc.driverClassName}" />
-          <property name="jdbcUrl" value="${jdbc.url}" />
-          <property name="username" value="${jdbc.username}" />
-          <property name="password" value="${jdbc.password}" />
-          <property name="maximumPoolSize" value="${hikari.maximumPoolSize}" />
-          <property name="minimumIdle" value="${hikari.minimumIdle}" />
-        </bean>
-      </beans>
-      ```
-
-      _Assurez-vous que l'espace de nommage `context` est bien déclaré dans les balises `<beans>` (`xmlns:context` et `xsi:schemaLocation` pour `spring-context.xsd`)._
-
-9.  **Construire le projet et télécharger les dépendances (via Maven) :**
+8.  **Construire le projet et télécharger les dépendances (via Maven) :**
 
     ```bash
     mvn clean install
@@ -138,14 +102,13 @@ Pour tester cette application, suivez ces étapes :
 
     Cela compilera le code et téléchargera les dépendances nécessaires.
 
-10. **Exécuter l'application (depuis l'IDE) :**
+9.  **Exécuter l'application (depuis l'IDE) :**
     - Importez le projet `Pharma7` dans votre IDE (IntelliJ IDEA, Eclipse, VS Code) comme un projet Maven existant.
     - Exécutez la classe `com.sidoCop.sysPharma.launcher.Laucher` en tant qu'application Java.
     - Vous devriez voir les messages de console indiquant le chargement du contexte Spring, l'utilisation du pool de connexions HikariCP, et les interactions réelles avec la base de données. Les logs de Log4j devraient également s'afficher.
 
-## Prochaines Étapes Possibles
+## Prochaines Étapes
 
 - **Supprimer `Class.forName` du DAO** : La ligne `Class.forName("com.mysql.cj.jdbc.Driver");` dans `MedicamentDao` est redondante car HikariCP (via Spring) gère déjà le chargement du driver. Elle peut être supprimée en toute sécurité.
 - **Utilisation de Spring JDBC Template** : Pour simplifier davantage le code du DAO et réduire le boilerplate JDBC (gestion des `try-catch-finally`, `ResultSet`, `Statement`), vous pouvez introduire `JdbcTemplate` de Spring.
-- **Migration vers Spring Data JPA / Hibernate** : Pour une approche ORM (Object-Relational Mapping) qui abstrait complètement la couche JDBC, permettant une gestion des données orientée objets.
-- **Introduction des profils Spring** : Pour gérer différentes configurations (développement, production) plus facilement.
+  -intègre des **tests unitaires avec JUnit 5** pour garantir la qualité et la fiabilité du code.
